@@ -59,7 +59,7 @@ fun MainApp() {
 }
 
 @Composable
-fun Greeting(name: String) {
+private fun Greeting(name: String) {
     Surface(color = MaterialTheme.colors.primary) {
 //        Text(text = "Hello $name!")
 //        Text(text = "Hello $name!", modifier = Modifier.padding(24.dp))
