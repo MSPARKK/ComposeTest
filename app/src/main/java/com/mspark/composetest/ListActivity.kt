@@ -5,14 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.coil.rememberCoilPainter
+import coil.annotation.ExperimentalCoilApi
+import coil.compose.rememberImagePainter
 import com.mspark.composetest.ui.theme.ComposeTestTheme
 
 class ListActivity : ComponentActivity() {
@@ -56,18 +61,31 @@ fun ListApp() {
 }
 
 
+@OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Greeting(testData: TestData) {
     Surface(
         color = MaterialTheme.colors.primary,
         modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
     ) {
-        Row {
-            Image(
-                painter = rememberCoilPainter(request = testData.imageUrl),
-                contentDescription = "My image description",
-                modifier = Modifier.size(100.dp)
-            )
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Box(
+                modifier = Modifier
+                    .padding(start = 20.dp)
+                    .size(60.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Image(
+                    painter = rememberImagePainter(data = testData.imageUrl),
+                    contentDescription = "My image description",
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .clip(CircleShape),
+                    contentScale = ContentScale.Crop,
+                )
+            }
             
             Column(modifier = Modifier
                 .fillMaxWidth()
