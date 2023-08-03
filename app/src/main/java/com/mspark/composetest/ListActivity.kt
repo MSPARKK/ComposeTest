@@ -8,6 +8,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
@@ -15,7 +16,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,7 +38,6 @@ class ListActivity : ComponentActivity() {
 @Composable
 fun ListApp() {
 
-//    val names: List<String> = listOf("World", "Compose", "한서", "한이", "마음을 담아")
     val testDataList: List<TestData> = listOf(
         TestData("Kobe","https://hips.hearstapps.com/hmg-prod/images/gettyimages-159141331-1580077058.jpg?crop=0.5446666666666666xw:1xh;center,top&resize=1200:*"),
         TestData("Lebron", "https://media.cnn.com/api/v1/images/stellar/prod/230523093708-01-lebron-james-052223.jpg?c=9x16"),
@@ -47,7 +49,7 @@ fun ListApp() {
     ComposeTestTheme {
         Surface(
             modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.onBackground
+            color = Color.White
         ) {
 
             Column(
@@ -68,9 +70,12 @@ fun ListApp() {
 @Composable
 private fun Greeting(testData: TestData) {
     Surface(
-        color = MaterialTheme.colors.primary,
-        modifier = Modifier.padding(vertical = 10.dp, horizontal = 20.dp)
-    ) {
+        color = Color.LightGray,
+        modifier = Modifier
+            .padding(vertical = 10.dp, horizontal = 20.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)), // 그림자가 안생기는 거 같다?
+        ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -98,14 +103,14 @@ private fun Greeting(testData: TestData) {
                     contentScale = ContentScale.Crop,
                 )
             }
-            
+
             Column(modifier = Modifier
                 .fillMaxWidth()
                 .padding(24.dp)) {
-                Text(text = "Hello,")
-                Text(text = testData.name)
+                Text(text = "Hello,", color = Color.White)
+                Text(text = testData.name, color = Color.White)
             }
-        } 
+        }
        
     }
 }
