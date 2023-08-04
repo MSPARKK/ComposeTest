@@ -3,7 +3,8 @@ package com.mspark.composetest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
@@ -13,13 +14,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
 import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -82,7 +83,7 @@ fun ListApp() {
                 modifier = Modifier.padding(vertical = 10.dp)
             ) {
                 items(testDataList) { testData ->
-                    Greeting(testData = testData)
+                    GreetingItem(testData = testData)
                 }
             }
         }
@@ -91,10 +92,8 @@ fun ListApp() {
 
 }
 
-
-@OptIn(ExperimentalCoilApi::class)
 @Composable
-private fun Greeting(testData: TestData) {
+private fun GreetingItem(testData: TestData) {
     val expanded = rememberSaveable { mutableStateOf(false) }
 
     Surface(
@@ -110,70 +109,98 @@ private fun Greeting(testData: TestData) {
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)), // 그림자가 안생기는 거 같다?
     ) {
         Column {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ){
-                Box(
-                    modifier = Modifier
-                        .padding(start = 20.dp)
-                        .size(62.dp)
-                ) {
-                    Image(
-                        painter = rememberImagePainter(data = testData.imageUrl),
-                        contentDescription = "My image description",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .clip(CircleShape)
-                            .border(1.dp, Color.Black, CircleShape),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
+            GreetingItemTopRow(testData = testData, expanded = expanded)
 
-                Column(modifier = Modifier
-                    .weight(1f)
-                    .padding(24.dp)
-                ) {
-                    Text(text = "Hello,", color = Color.Black)
-                    Text(text = testData.name, color = Color.Black)
-                }
-
-
-                Box(
-                    modifier = Modifier
-                        .padding(end = 10.dp)
-                        .size(60.dp)
-                ) {
-                    IconButton(onClick = {
-                        expanded.value = !expanded.value
-                    }) {
-                        Icon(
-                            imageVector = if (expanded.value) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(14.dp)
-                        )
-                    }
-                }
-
-            }
-
-            AnimatedVisibility(
-                visible = expanded.value,
-            ) {
-                Text(
-                    text = testData.detail,
-                    modifier = Modifier.padding(
-                        top = 6.dp,
-                        bottom = 20.dp,
-                        start = 20.dp,
-                        end = 20.dp
-                    )
-                )
-            }
+            GreetingItemDetailText(testData = testData, expanded = expanded)
         }
+    }
+}
 
-       
+@Composable
+fun GreetingItemTopRow(testData: TestData, expanded: MutableState<Boolean>) {
+    Row(
+        verticalAlignment = Alignment.CenterVertically
+    ){
+        GreetingItemImage(testData = testData)
+
+        GreetingItemText(
+            modifier = Modifier.weight(1f),
+            testData = testData
+        )
+
+        GreetingItemIcon(expanded = expanded)
+    }
+}
+
+@OptIn(ExperimentalCoilApi::class)
+@Composable
+fun GreetingItemImage(testData: TestData) {
+    Box(
+        modifier = Modifier
+            .padding(start = 20.dp)
+            .size(62.dp)
+    ) {
+        Image(
+            painter = rememberImagePainter(data = testData.imageUrl),
+            contentDescription = "My image description",
+            modifier = Modifier
+                .fillMaxSize()
+                .clip(CircleShape)
+                .border(1.dp, Color.Black, CircleShape),
+            contentScale = ContentScale.Crop,
+        )
+    }
+}
+
+@Composable
+fun GreetingItemText(
+    modifier: Modifier = Modifier,
+    testData: TestData
+) {
+    Column(modifier = modifier
+        .padding(24.dp)
+    ) {
+        Text(text = "Hello,", color = Color.Black)
+        Text(text = testData.name, color = Color.Black)
+    }
+}
+
+@Composable
+fun GreetingItemIcon(expanded: MutableState<Boolean>) {
+    Box(
+        modifier = Modifier
+            .padding(end = 10.dp)
+            .size(60.dp)
+    ) {
+        IconButton(onClick = {
+            expanded.value = !expanded.value
+        }) {
+            Icon(
+                imageVector = if (expanded.value) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(14.dp)
+            )
+        }
+    }
+}
+
+@OptIn(ExperimentalAnimationApi::class)
+@Composable
+fun GreetingItemDetailText(testData: TestData, expanded: MutableState<Boolean>) {
+    AnimatedContent(targetState = expanded.value) { targetExpanded ->
+        if (targetExpanded) {
+            Text(
+                text = testData.detail,
+                modifier = Modifier.padding(
+                    top = 6.dp,
+                    bottom = 20.dp,
+                    start = 20.dp,
+                    end = 20.dp
+                )
+            )
+        }
     }
 }
 
