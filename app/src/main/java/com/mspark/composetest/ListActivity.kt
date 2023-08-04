@@ -102,7 +102,7 @@ private fun GreetingItem(testData: TestData) {
             .padding(vertical = 10.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(16.dp))
             .border(
-                1.dp,
+                2.dp,
                 Color.Black,
                 RoundedCornerShape(16.dp)
             )

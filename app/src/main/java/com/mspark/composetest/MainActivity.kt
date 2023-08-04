@@ -50,8 +50,10 @@ fun MainApp() {
                 modifier = Modifier.fillMaxSize()
             ) {
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    val context = LocalContext.current
                     Greeting("Android Android Android Android")
-                    SetButton("버튼 버튼")
+                    SetButton("ListActivity로 이동", Intent(context, ListActivity::class.java))
+                    SetButton("ComplexListActivity로 이동", Intent(context, ComplexListActivity::class.java))
                 }
             }
         }
@@ -61,8 +63,6 @@ fun MainApp() {
 @Composable
 private fun Greeting(name: String) {
     Surface(color = MaterialTheme.colors.primary) {
-//        Text(text = "Hello $name!")
-//        Text(text = "Hello $name!", modifier = Modifier.padding(24.dp))
         Text(
             text = "Hello $name!",
 //            style = MaterialTheme.typography.h6,
@@ -78,12 +78,11 @@ private fun Greeting(name: String) {
 }
 
 @Composable
-fun SetButton(text: String) {
+fun SetButton(text: String, intent: Intent) {
     val context = LocalContext.current
 
     Button(onClick = {
-        Toast.makeText(context, "버튼 클릭!", Toast.LENGTH_SHORT).show()
-        context.startActivity(Intent(context, ListActivity::class.java))
+        context.startActivity(intent)
         // todo : StartActivityForResult
     }) {
         Text(text = text)
