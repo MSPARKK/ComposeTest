@@ -13,6 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -101,6 +102,11 @@ private fun Greeting(testData: TestData) {
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(16.dp))
+            .border(
+                1.dp,
+                Color.Black,
+                RoundedCornerShape(16.dp)
+            )
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)), // 그림자가 안생기는 거 같다?
     ) {
         Column {
@@ -118,7 +124,7 @@ private fun Greeting(testData: TestData) {
                         modifier = Modifier
                             .fillMaxSize()
                             .clip(CircleShape)
-                            .border(1.dp, Color.Gray, CircleShape),
+                            .border(1.dp, Color.Black, CircleShape),
                         contentScale = ContentScale.Crop,
                     )
                 }
@@ -127,8 +133,8 @@ private fun Greeting(testData: TestData) {
                     .weight(1f)
                     .padding(24.dp)
                 ) {
-                    Text(text = "Hello,", color = Color.White)
-                    Text(text = testData.name, color = Color.White)
+                    Text(text = "Hello,", color = Color.Black)
+                    Text(text = testData.name, color = Color.Black)
                 }
 
 
