@@ -19,7 +19,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.annotation.ExperimentalCoilApi
@@ -105,11 +107,29 @@ private fun Greeting(testData: TestData) {
             }
 
             Column(modifier = Modifier
-                .fillMaxWidth()
+                .weight(1f)
                 .padding(24.dp)) {
                 Text(text = "Hello,", color = Color.White)
                 Text(text = testData.name, color = Color.White)
             }
+
+
+            Box(
+                modifier = Modifier
+                    .padding(end = 10.dp)
+                    .size(60.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                val imageVector = ImageVector.vectorResource(id = R.drawable.round_keyboard_arrow_down_24)
+                Image(
+                    imageVector,
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(14.dp)
+                )
+            }
+
         }
        
     }
