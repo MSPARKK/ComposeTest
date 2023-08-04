@@ -19,7 +19,10 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowDropDown
 import androidx.compose.material.icons.rounded.KeyboardArrowDown
+import androidx.compose.material.icons.rounded.KeyboardArrowUp
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -79,21 +82,22 @@ fun ListApp() {
 @OptIn(ExperimentalCoilApi::class)
 @Composable
 private fun Greeting(testData: TestData) {
+    val expanded = remember { mutableStateOf(false) }
+
     Surface(
         color = Color.LightGray,
         modifier = Modifier
             .padding(vertical = 10.dp, horizontal = 20.dp)
             .clip(RoundedCornerShape(16.dp))
             .shadow(elevation = 8.dp, shape = RoundedCornerShape(16.dp)), // 그림자가 안생기는 거 같다?
-        ) {
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically
         ){
             Box(
                 modifier = Modifier
                     .padding(start = 20.dp)
-                    .size(62.dp),
-                contentAlignment = Alignment.Center
+                    .size(62.dp)
             ) {
                 Image(
                     painter = rememberImagePainter(data = testData.imageUrl),
@@ -101,14 +105,6 @@ private fun Greeting(testData: TestData) {
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(CircleShape)
-//                        .clip(
-//                            CutCornerShape(
-//                                topStart = 4.dp,
-//                                topEnd = 8.dp,
-//                                bottomEnd = 16.dp,
-//                                bottomStart = 8.dp
-//                            )
-//                        )
                         .border(1.dp, Color.Gray, CircleShape),
                     contentScale = ContentScale.Crop,
                 )
@@ -116,7 +112,8 @@ private fun Greeting(testData: TestData) {
 
             Column(modifier = Modifier
                 .weight(1f)
-                .padding(24.dp)) {
+                .padding(24.dp)
+            ) {
                 Text(text = "Hello,", color = Color.White)
                 Text(text = testData.name, color = Color.White)
             }
@@ -125,16 +122,16 @@ private fun Greeting(testData: TestData) {
             Box(
                 modifier = Modifier
                     .padding(end = 10.dp)
-                    .size(60.dp),
-                contentAlignment = Alignment.Center
+                    .size(60.dp)
             ) {
                 val context = LocalContext.current
 
                 IconButton(onClick = {
                     Toast.makeText(context, "아이콘 버튼 클릭!", Toast.LENGTH_SHORT).show()
-                }){
+                    expanded.value = !expanded.value
+                }) {
                     Icon(
-                        imageVector = Icons.Rounded.KeyboardArrowDown,
+                        imageVector = if (expanded.value) Icons.Rounded.KeyboardArrowUp else Icons.Rounded.KeyboardArrowDown,
                         contentDescription = null,
                         modifier = Modifier
                             .fillMaxSize()
