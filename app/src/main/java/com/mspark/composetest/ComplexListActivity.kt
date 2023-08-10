@@ -3,9 +3,13 @@ package com.mspark.composetest
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Icon
@@ -57,7 +63,11 @@ fun ComplexListScreen() {
             modifier = Modifier.fillMaxSize(),
             color = Color.White
         ) {
-            TeamRow()
+            Column {
+                TeamRow()
+                PlayerGrid()
+            }
+
         }
     }
 }
@@ -114,7 +124,7 @@ fun TeamElement(
                 .paddingFromBaseline(
                     top = 24.dp, bottom = 8.dp
                 )
-                .width(150.dp),
+                .width(120.dp),
             textAlign = TextAlign.Center,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
@@ -126,6 +136,7 @@ fun TeamElement(
 
 @Composable
 fun PlayerElement(
+    name: String,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -142,7 +153,7 @@ fun PlayerElement(
             contentScale = ContentScale.Crop
         )
         Text(
-            text = "hi",
+            text = "hi, $name",
             style = MaterialTheme.typography.h6,
             modifier = Modifier
                 .align(CenterVertically)
@@ -166,6 +177,31 @@ fun TeamRow(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PlayerGrid(
+    modifier: Modifier = Modifier
+) {
+    LazyVerticalGrid(
+        cells = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp),
+        content = {
+            items(100) { index ->
+                Box(
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .size(80.dp)
+                        .background(Color.Gray),
+                    contentAlignment = Alignment.Center
+                ) {
+                    PlayerElement("$index")
+                }
+
+            }
+        }
+    )
+}
+
 @Preview(showBackground = true)
 @Composable
 fun ComplexListPreView() {
@@ -182,13 +218,13 @@ fun SearchBarPreview() {
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
 fun TeamElementPreview() {
-    TeamElement("테스트 팀", "")
+    TeamElement("숏", "")
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
 @Composable
 fun PlayerElementPreview() {
-    PlayerElement()
+    PlayerElement("이름이름")
 }
 
 @Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
@@ -232,6 +268,12 @@ private fun getTeamData(): List<Teamdata> {
         ),
 
     )
+}
+
+@Preview(showBackground = true, backgroundColor = 0xFFF0EAE2)
+@Composable
+fun PlayerGridPreview() {
+    PlayerGrid()
 }
 
 data class Teamdata(
