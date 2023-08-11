@@ -64,8 +64,13 @@ fun ComplexListScreen() {
             color = Color.White
         ) {
             Column {
-                TeamRow()
-                PlayerGrid()
+                HomeSection(title = "TEAM") {
+                    TeamRow()
+                }
+
+                HomeSection(title = "PLAYER") {
+                    PlayerGrid()
+                }
             }
 
         }
@@ -174,6 +179,18 @@ fun TeamRow(
         items(getTeamData()) { item ->
             TeamElement(item.name, item.imageUrl)
         }
+    }
+}
+
+@Composable
+fun HomeSection(
+    title: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit
+) {
+    Column() {
+        Text(title)
+        content()
     }
 }
 
