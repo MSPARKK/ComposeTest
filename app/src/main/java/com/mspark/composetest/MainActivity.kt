@@ -54,6 +54,7 @@ fun MainApp() {
                     Greeting("Android Android Android Android")
                     SetButton("ListActivity로 이동", Intent(context, ListActivity::class.java))
                     SetButton("ComplexListActivity로 이동", Intent(context, ComplexListActivity::class.java))
+                    SetButton("세팅으로 이동", Intent(context, SettingsActivity::class.java))
                 }
             }
         }
